@@ -39,48 +39,20 @@ app.get("/api/:date", function(req, res){
   
   let stringDate=req.params.date   
 
-  function usingDate (){
- 
-      if (! stringDate.includes('-')){
-        //En caso de ser un timestamp
-        stringDate = Number (stringDate)     
-      }
-      const date = new Date (stringDate)
-      if (date=="Invalid Date"){
-        return res.json({error:"Invalid Date"})
-      }
-
-      const formattedDate = date.toGMTString(date)
-      const timestamp = Date.parse(formattedDate) //pasamos a timestamp
-     
-      res.json({unix: timestamp, utc: formattedDate}) 
-
+  if (! stringDate.includes('-')){
+    //En caso de ser un timestamp
+    stringDate = Number (stringDate)     
+  }
+  const date = new Date (stringDate)
+  
+  if (date=="Invalid Date"){
+    return res.json({error:"Invalid Date"})
   }
 
-
-  function usingTimestamp(){
-
-      let timestamp = Date.parse(stringDate)
-
-      if ( isNaN(timestamp)){
-        console.log('es un timestamp y pasamos a numero ')
-        timestamp = Number(stringDate)     
-            
-      }
-      const date= new Date(timestamp)  
-
-      console.log(date)
-      if (date=="Invalid Date"){
-        return res.json({error:"Invalid Date"})
-      }
-      const formattedDate = date.toGMTString(date)
-      console.log(formattedDate)
-      res.json({unix: timestamp, utc: formattedDate})
-
-  }
-
-  usingDate()
-  //usingTimestamp()  
+  const formattedDate = date.toGMTString(date)
+  const timestamp = Date.parse(formattedDate) //pasamos a timestamp
+  
+  res.json({unix: timestamp, utc: formattedDate})   
 });
 
 
