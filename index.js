@@ -49,7 +49,7 @@ app.get("/api/:date", function(req, res){
     return res.json({error:"Invalid Date"})
   }
 
-  const formattedDate = date.toGMTString(date)
+  const formattedDate = date.toGMTString()
   const timestamp = Date.parse(formattedDate) //pasamos a timestamp
   
   res.json({unix: timestamp, utc: formattedDate})   
