@@ -33,26 +33,18 @@ app.get("/api/", (req,res)=>{
   res.json({unix: timestamp, utc:formattedDate})
 })
 
-
+const isInvalidDate = (stringDate) => new Date(stringDate) == "Invalid Date"  && new Date(+stringDate) == "Invalid Date" 
+const isTimeStamp = (stringDate) => new Date(stringDate) == "Invalid Date"
 
 app.get("/api/:date", function(req, res){
   
-  let stringDate=req.params.date   
-
-  if (! stringDate.includes('-')){
-    //En caso de ser un timestamp
-    stringDate = Number (stringDate)     
+  let stringDate=req.params.date  
+  if(isInvalidDate(stringDate)){   
+    return res.json({error:"Invalid Date"}) 
   }
-  const date = new Date (stringDate)
-  
-  if (date=="Invalid Date"){
-    return res.json({error:"Invalid Date"})
-  }
-
-  const formattedDate = date.toGMTString()
-  const timestamp = Date.parse(formattedDate) //pasamos a timestamp
-  
-  res.json({unix: timestamp, utc: formattedDate})   
+ 
+  let date = isTimeStamp(stringDate) ? new Date(+stringDate) : new Date(stringDate)  
+  res.json({unix: date.getTime(), utc: date.toUTCString()})   
 });
 
 
